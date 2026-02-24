@@ -1,6 +1,6 @@
 /**
  * EduPulse AI – Express Server Entry Point
- * Works both locally (npm run dev) and on Vercel (serverless)
+ * Optimized for Vercel Serverless
  */
 const express = require('express');
 const cors = require('cors');
@@ -11,22 +11,31 @@ const errorHandler = require('./middleware/errorHandler');
 // Load environment variables
 dotenv.config();
 
-// Connect to MongoDB
-connectDB();
-
 const app = express();
 
-// ─── CORS ─────────────────────────────────────────────────────────────────────
-// Allow localhost in dev + any Vercel preview/production URL in production
+// ─── DB Connection Middleware ────────────────────────────────────────────────
+// Ensures database is connected before processing any request
+const ensureDB = async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    res.status(500).json({
+      error: "Database Connection Failed",
+      details: error.message
+    });
+  }
+};
+
+// ─── Middleware ───────────────────────────────────────────────────────────────
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  process.env.CLIENT_URL,          // set this in Vercel env vars
+  process.env.CLIENT_URL,
 ].filter(Boolean);
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (curl, Postman) and listed origins
     if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
       callback(null, true);
     } else {
@@ -40,12 +49,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
+// Apply DB connection middleware to all API routes
+app.use('/api', ensureDB);
+
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/student', require('./routes/student'));
 app.use('/api/teacher', require('./routes/teacher'));
 app.use('/api/messages', require('./routes/messages'));
 
-// Health check
+// Root / Health checks
+app.get('/', (req, res) => res.send('EduPulse API is running...'));
 app.get('/api/health', (req, res) =>
   res.json({ status: 'OK', service: 'EduPulse Backend', time: new Date().toISOString() })
 );
@@ -53,13 +66,13 @@ app.get('/api/health', (req, res) =>
 // ─── Error Handler ────────────────────────────────────────────────────────────
 app.use(errorHandler);
 
-// ─── Start server (local only — Vercel handles this itself) ───────────────────
-if (process.env.NODE_ENV !== 'production') {
+// ─── Start server (local only) ───────────────────
+if (require.main === module) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`✅ EduPulse Backend running on http://localhost:${PORT}`);
   });
 }
 
-// Export app for Vercel serverless
+// Export app for Vercel
 module.exports = app;

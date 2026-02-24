@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+/* ── Dark mode (default) ────────────────────────────────────────── */
+:root {
+  --bg-primary: #0f1117;
+  --bg-secondary: #1a1d27;
+  --bg-card: #1e2130;
+  --accent-blue: #4f8ef7;
+  --accent-purple: #9b59f7;
+  --accent-green: #22c55e;
+  --accent-orange: #f97316;
+  --accent-red: #ef4444;
+  --text-primary: #e8eaf0;
+  --text-secondary: #8891a8;
+  --border: #2d3148;
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Light mode ─────────────────────────────────────────────────── */
+html.light {
+  --bg-primary: #f0f2f8;
+  --bg-secondary: #e4e8f0;
+  --bg-card: #ffffff;
+  --accent-blue: #3b7ff5;
+  --accent-purple: #7c3aed;
+  --accent-green: #16a34a;
+  --accent-orange: #ea6a00;
+  --accent-red: #dc2626;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --border: #d1d5db;
+  --input-bg: rgba(0, 0, 0, 0.04);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+}
+
+/* ── Base ───────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+  line-height: 1.6;
+  transition: background-color 0.25s, color 0.25s;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-blue);
+}
+
+/* ── Glass card ─────────────────────────────────────────────────── */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  transition: background 0.25s, border-color 0.25s;
+}
+
+/* ── Gradient text ──────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #4f8ef7 0%, #9b59f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Skeleton loading ───────────────────────────────────────────── */
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--border) 50%, var(--bg-secondary) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+/* ── Glow ───────────────────────────────────────────────────────── */
+.glow-blue {
+  box-shadow: 0 0 20px rgba(79, 142, 247, 0.22);
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px rgba(155, 89, 247, 0.22);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.22);
+}
+
+.glow-red {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.22);
+}
+
+/* ── Table styles ───────────────────────────────────────────────── */
+.vtu-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.vtu-table th {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 8px 10px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.vtu-table td {
+  padding: 7px 10px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.vtu-table tr:last-child td {
+  border-bottom: none;
+}
+
+.vtu-table tr:hover td {
+  background: var(--bg-secondary);
+}
+
+/* ── Input base ─────────────────────────────────────────────────── */
+.ep-input {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border-radius: 10px;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.ep-input:focus {
+  border-color: var(--accent-blue);
+}

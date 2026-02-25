@@ -22,11 +22,14 @@ export const AuthProvider = ({ children }) => {
             console.error('Login error:', err);
             let message = 'Login failed';
             if (!err.response) {
-                message = 'Network Error: Cannot reach backend server. Please check VITE_API_URL or CORS settings.';
+                message = 'Network Error: Cannot reach backend server. Please check VITE_API_URL and CORS.';
             } else if (err.response.status === 404) {
-                message = 'API Endpoint not found (404). Check if /api prefix is correct.';
+                message = 'API Endpoint not found (404). Check backend URL.';
             } else {
-                message = err.response.data?.message || 'Invalid credentials or server error';
+                // Try to get specific error from server response
+                const serverData = err.response.data;
+                message = serverData?.message || serverData?.error || 'Server Error';
+                if (serverData?.details) message += `: ${serverData.details}`;
             }
             return { success: false, message };
         } finally {

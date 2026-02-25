@@ -1,8 +1,15 @@
 // Axios instance configured with base URL and JWT interceptor
 import axios from 'axios';
 
+let baseURL = import.meta.env.VITE_API_URL || '/api';
+
+// If it's a full URL (production) and doesn't end with /api, append it automatically
+if (baseURL.startsWith('http') && !baseURL.endsWith('/api')) {
+    baseURL = baseURL.replace(/\/$/, '') + '/api';
+}
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || '/api',
+    baseURL,
     headers: { 'Content-Type': 'application/json' },
 });
 

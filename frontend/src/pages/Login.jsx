@@ -35,7 +35,7 @@ export default function Login() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="glass-card w-full max-w-md p-10 mx-4"
+                className="glass-card w-full max-w-sm sm:max-w-md p-6 sm:p-10 mx-4"
             >
                 {/* Logo */}
                 <div className="text-center mb-8">

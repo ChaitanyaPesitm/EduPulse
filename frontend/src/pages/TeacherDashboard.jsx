@@ -226,7 +226,7 @@ export default function TeacherDashboard() {
 
                 {/* Stat cards */}
                 {analytics && (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(120px,1fr))', gap: '0.75rem', marginBottom: '1rem' }}>
+                    <div className="stats-grid">
                         {[
                             { label: 'Total Students', value: analytics.totalStudents, color: '#4f8ef7', icon: '👥' },
                             { label: 'At Risk', value: analytics.atRiskStudents, color: '#ef4444', icon: '🚨' },
@@ -235,34 +235,34 @@ export default function TeacherDashboard() {
                         ].map(({ label, value, color, icon }) => (
                             <div key={label} className="glass-card" style={{ padding: '0.85rem', borderLeft: `3px solid ${color}` }}>
                                 <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginBottom: '0.15rem' }}>{icon} {label}</div>
-                                <div style={{ fontSize: '1.5rem', fontWeight: 800, color }}>{value}</div>
+                                <div style={{ fontSize: '1.25rem', fontWeight: 800, color }}>{value}</div>
                             </div>
                         ))}
                     </div>
                 )}
 
                 {/* Tabs */}
-                <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
                     {[['students', '👥 Students'], ['attendance', '📅 Attendance'], ['analytics', '📊 Analytics']].map(([key, label]) => (
                         <button key={key} onClick={() => setTab(key)} style={{
-                            padding: '0.42rem 1.05rem', borderRadius: '10px',
+                            padding: '0.4rem 0.8rem', borderRadius: '10px',
                             border: `1px solid ${tab === key ? 'transparent' : 'var(--border)'}`,
                             background: tab === key ? 'linear-gradient(135deg,#4f8ef7,#9b59f7)' : 'var(--bg-card)',
                             color: tab === key ? 'white' : 'var(--text-secondary)',
-                            fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer',
+                            fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer',
                         }}>{label}</button>
                     ))}
                 </div>
 
                 {/* ─── STUDENTS TAB ─── */}
                 {tab === 'students' && (
-                    <div style={{ display: 'grid', gridTemplateColumns: '270px 1fr', gap: '1rem' }}>
+                    <div className="teacher-grid">
 
                         {/* Roster */}
                         <div>
                             <input placeholder="🔍 Search name or USN…" value={search} onChange={e => setSearch(e.target.value)}
                                 className="ep-input" style={{ marginBottom: '0.65rem' }} />
-                            <div style={{ maxHeight: 'calc(100vh - 270px)', overflowY: 'auto', paddingRight: 2 }}>
+                            <div style={{ maxHeight: 'calc(100vh - 280px)', overflowY: 'auto', paddingRight: 2 }}>
                                 {loading ? <TableSkeleton rows={8} /> : filtered.map(s => {
                                     const sub = s.performance?.subjects?.find(x => x.name === mySubject)
                                     const cie = sub?.totalCIE ?? '–'
@@ -272,25 +272,25 @@ export default function TeacherDashboard() {
                                         <motion.div key={s.student.id} whileHover={{ x: 2 }} onClick={() => selectStudent(s)}
                                             className="glass-card"
                                             style={{
-                                                padding: '0.68rem 0.85rem', marginBottom: '0.45rem', cursor: 'pointer',
+                                                padding: '0.65rem 0.8rem', marginBottom: '0.4rem', cursor: 'pointer',
                                                 border: selected?.student.id === s.student.id ? '1px solid var(--accent-purple)' : '1px solid var(--border)'
                                             }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                                 <div>
-                                                    <p style={{ margin: 0, fontWeight: 600, fontSize: '0.8rem', color: 'var(--text-primary)' }}>{s.student.name}</p>
-                                                    <p style={{ margin: 0, fontSize: '0.67rem', color: 'var(--text-secondary)' }}>{s.student.usn}</p>
+                                                    <p style={{ margin: 0, fontWeight: 600, fontSize: '0.78rem', color: 'var(--text-primary)' }}>{s.student.name}</p>
+                                                    <p style={{ margin: 0, fontSize: '0.65rem', color: 'var(--text-secondary)' }}>{s.student.usn}</p>
                                                 </div>
                                                 <span style={{
-                                                    fontSize: '0.63rem', padding: '1px 5px', borderRadius: 999, flexShrink: 0,
-                                                    background: riskLv === 'Low' ? 'rgba(34,197,94,0.15)' : riskLv === 'High' ? 'rgba(239,68,68,0.15)' : 'rgba(249,115,22,0.15)',
+                                                    fontSize: '0.6rem', padding: '1px 5px', borderRadius: 999, flexShrink: 0,
+                                                    background: riskLv === 'Low' ? 'rgba(34,197,94,0.1)' : riskLv === 'High' ? 'rgba(239,68,68,0.1)' : 'rgba(249,115,22,0.1)',
                                                     color: RISK_COLORS[riskLv]
                                                 }}>
                                                     {riskLv}
                                                 </span>
                                             </div>
-                                            <div style={{ display: 'flex', gap: '0.65rem', marginTop: '0.25rem' }}>
-                                                <span style={{ fontSize: '0.66rem', color: 'var(--text-secondary)' }}>CIE: <strong style={{ color: 'var(--accent-blue)' }}>{cie}/50</strong></span>
-                                                <span style={{ fontSize: '0.66rem', color: 'var(--text-secondary)' }}>Att: <strong style={{ color: att >= 75 ? '#22c55e' : '#ef4444' }}>{att}%</strong></span>
+                                            <div style={{ display: 'flex', gap: '0.65rem', marginTop: '0.2rem' }}>
+                                                <span style={{ fontSize: '0.64rem', color: 'var(--text-secondary)' }}>CIE: <strong style={{ color: 'var(--accent-blue)' }}>{cie}/50</strong></span>
+                                                <span style={{ fontSize: '0.64rem', color: 'var(--text-secondary)' }}>Att: <strong style={{ color: att >= 75 ? '#22c55e' : '#ef4444' }}>{att}%</strong></span>
                                             </div>
                                         </motion.div>
                                     )
@@ -303,110 +303,112 @@ export default function TeacherDashboard() {
                             {!selected ? (
                                 <BlankPanel key="blank" />
                             ) : (
-                                <motion.div key={selected.student.id} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}
-                                    style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+                                <motion.div key={selected.student.id} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}
+                                    style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
 
                                     {/* Student header */}
-                                    <div className="glass-card" style={{ padding: '0.85rem 1.1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <div className="glass-card" style={{ padding: '0.75rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                                         <div>
-                                            <p style={{ margin: 0, fontWeight: 700, color: 'var(--text-primary)', fontSize: '1rem' }}>{selected.student.name}</p>
-                                            <p style={{ margin: 0, fontSize: '0.73rem', color: 'var(--text-secondary)' }}>USN: {selected.student.usn} · {selected.student.email}</p>
+                                            <p style={{ margin: 0, fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.95rem' }}>{selected.student.name}</p>
+                                            <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-secondary)' }}>USN: {selected.student.usn}</p>
                                         </div>
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                        <div style={{ display: 'flex', gap: '0.4rem' }}>
                                             <button onClick={() => setSelected(null)}
-                                                style={{ padding: '0.38rem 0.75rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.78rem' }}>
+                                                style={{ padding: '0.35rem 0.7rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.75rem' }}>
                                                 ← Back
                                             </button>
                                             <button onClick={() => setChatStudent({ id: selected.student.id, name: selected.student.name, role: 'student' })}
-                                                style={{ padding: '0.38rem 0.9rem', borderRadius: '8px', border: 'none', background: 'linear-gradient(135deg,#9b59f7,#4f8ef7)', color: 'white', fontWeight: 600, cursor: 'pointer', fontSize: '0.78rem' }}>
+                                                style={{ padding: '0.35rem 0.85rem', borderRadius: '8px', border: 'none', background: 'linear-gradient(135deg,#9b59f7,#4f8ef7)', color: 'white', fontWeight: 600, cursor: 'pointer', fontSize: '0.75rem' }}>
                                                 💬 Chat
                                             </button>
                                         </div>
                                     </div>
 
                                     {/* All-subjects overview (read-only) */}
-                                    <div className="glass-card" style={{ padding: '1rem', overflowX: 'auto' }}>
-                                        <p style={{ margin: '0 0 0.6rem', fontWeight: 700, fontSize: '0.82rem', color: 'var(--text-primary)' }}>📋 All Subjects Overview</p>
-                                        <table className="vtu-table">
-                                            <thead><tr>
-                                                <th style={{ textAlign: 'left' }}>Subject</th>
-                                                <th>IA1/50</th><th>IA2/50</th><th>Asgn/10</th>
-                                                <th>CIE/50</th><th>Att%</th>
-                                            </tr></thead>
-                                            <tbody>
-                                                {(selected.performance?.subjects || []).map(sub => (
-                                                    <tr key={sub.code}>
-                                                        <td style={{
-                                                            textAlign: 'left', fontSize: '0.76rem',
-                                                            fontWeight: sub.name === mySubject ? 700 : 400,
-                                                            color: sub.name === mySubject ? 'var(--accent-purple)' : 'var(--text-primary)'
-                                                        }}>
-                                                            {sub.name === mySubject && '✏️ '}{sub.name}
-                                                        </td>
-                                                        <td>{sub.ia1}</td><td>{sub.ia2}</td><td>{sub.assignment}</td>
-                                                        <td style={{ fontWeight: 700, color: sub.totalCIE >= 40 ? '#22c55e' : sub.totalCIE >= 25 ? '#f97316' : '#ef4444' }}>{sub.totalCIE}</td>
-                                                        <td style={{ color: sub.attendancePct >= 75 ? '#22c55e' : '#ef4444' }}>{sub.attendancePct}%</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
+                                    <div className="glass-card" style={{ padding: '1rem' }}>
+                                        <p style={{ margin: '0 0 0.6rem', fontWeight: 700, fontSize: '0.8rem', color: 'var(--text-primary)' }}>📋 All Subjects Overview</p>
+                                        <div className="vtu-table-container">
+                                            <table className="vtu-table">
+                                                <thead><tr>
+                                                    <th style={{ textAlign: 'left' }}>Subject</th>
+                                                    <th>IA1</th><th>IA2</th><th>Asgn</th>
+                                                    <th>CIE</th><th>Att%</th>
+                                                </tr></thead>
+                                                <tbody>
+                                                    {(selected.performance?.subjects || []).map(sub => (
+                                                        <tr key={sub.code}>
+                                                            <td style={{
+                                                                textAlign: 'left', fontSize: '0.72rem',
+                                                                fontWeight: sub.name === mySubject ? 700 : 400,
+                                                                color: sub.name === mySubject ? 'var(--accent-purple)' : 'var(--text-primary)'
+                                                            }}>
+                                                                {sub.name === mySubject && '✏️ '}{sub.name}
+                                                            </td>
+                                                            <td>{sub.ia1}</td><td>{sub.ia2}</td><td>{sub.assignment}</td>
+                                                            <td style={{ fontWeight: 700, color: sub.totalCIE >= 40 ? '#22c55e' : sub.totalCIE >= 25 ? '#f97316' : '#ef4444' }}>{sub.totalCIE}</td>
+                                                            <td style={{ color: sub.attendancePct >= 75 ? '#22c55e' : '#ef4444' }}>{sub.attendancePct}%</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
 
                                     {/* Edit own subject */}
                                     <div className="glass-card" style={{ padding: '1rem' }}>
-                                        <p style={{ margin: '0 0 0.75rem', fontWeight: 700, fontSize: '0.84rem', color: 'var(--accent-purple)' }}>
+                                        <p style={{ margin: '0 0 0.7rem', fontWeight: 700, fontSize: '0.82rem', color: 'var(--accent-purple)' }}>
                                             ✏️ Edit — {mySubject}
                                         </p>
 
                                         {/* Module unit tests */}
-                                        <p style={{ margin: '0 0 0.35rem', fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 700, textTransform: 'uppercase' }}>Module Unit Tests (0–20 each)</p>
-                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: '0.45rem', marginBottom: '1rem' }}>
+                                        <p style={{ margin: '0 0 0.3rem', fontSize: '0.65rem', color: 'var(--text-secondary)', fontWeight: 700, textTransform: 'uppercase' }}>Module Unit Tests (0–20 each)</p>
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: '0.4rem', marginBottom: '0.75rem' }}>
                                             {editModules.map((m, i) => (
                                                 <div key={m.moduleNo}>
-                                                    <label style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', display: 'block', textAlign: 'center', marginBottom: 2 }}>M{m.moduleNo}</label>
+                                                    <label style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', display: 'block', textAlign: 'center', marginBottom: 2 }}>M{m.moduleNo}</label>
                                                     <input type="number" min={0} max={20} value={m.unitTestMarks}
                                                         onChange={e => { const n = [...editModules]; n[i] = { ...n[i], unitTestMarks: Number(e.target.value) }; setEditModules(n) }}
-                                                        className="ep-input" style={{ textAlign: 'center', padding: '0.4rem 0.25rem' }} />
+                                                        className="ep-input" style={{ textAlign: 'center', padding: '0.35rem 0.2rem', fontSize: '0.78rem' }} />
                                                 </div>
                                             ))}
                                         </div>
 
                                         {/* IA1, IA2, Assignment, CIE preview */}
-                                        <p style={{ margin: '0 0 0.35rem', fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 700, textTransform: 'uppercase' }}>IA Exam & CIE (formula preview → /50)</p>
-                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '0.6rem', marginBottom: '0.75rem' }}>
+                                        <p style={{ margin: '0 0 0.3rem', fontSize: '0.65rem', color: 'var(--text-secondary)', fontWeight: 700, textTransform: 'uppercase' }}>IA Exam & CIE (formula preview → /50)</p>
+                                        <div className="cie-grid" style={{ marginBottom: '0.75rem' }}>
                                             {[
-                                                { label: 'IA1 / 50  (M1,M2,M3½)', value: editIa1, set: setEditIa1, max: 50, color: '#4f8ef7' },
-                                                { label: 'IA2 / 50  (M3½,M4,M5)', value: editIa2, set: setEditIa2, max: 50, color: '#9b59f7' },
-                                                { label: 'Assignment / 10', value: editAssignment, set: setEditAssignment, max: 10, color: '#f97316' },
-                                                { label: 'CIE / 50 (auto calc)', value: previewCIE, readOnly: true, color: previewCIE >= 40 ? '#22c55e' : previewCIE >= 25 ? '#f97316' : '#ef4444' },
+                                                { label: 'IA1 / 50', value: editIa1, set: setEditIa1, max: 50, color: '#4f8ef7' },
+                                                { label: 'IA2 / 50', value: editIa2, set: setEditIa2, max: 50, color: '#9b59f7' },
+                                                { label: 'Asgn / 10', value: editAssignment, set: setEditAssignment, max: 10, color: '#f97316' },
+                                                { label: 'CIE / 50', value: previewCIE, readOnly: true, color: previewCIE >= 40 ? '#22c55e' : previewCIE >= 25 ? '#f97316' : '#ef4444' },
                                             ].map(({ label, value, set, max, color, readOnly }) => (
                                                 <div key={label}>
-                                                    <label style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 3 }}>{label}</label>
+                                                    <label style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 3 }}>{label}</label>
                                                     <input type="number" min={0} max={max} value={value} readOnly={readOnly}
                                                         onChange={set ? e => set(Math.min(max, Math.max(0, Number(e.target.value)))) : undefined}
                                                         className="ep-input"
-                                                        style={{ textAlign: 'center', fontWeight: 700, color, background: readOnly ? 'var(--bg-secondary)' : 'var(--input-bg)', padding: '0.5rem' }} />
+                                                        style={{ textAlign: 'center', fontWeight: 700, color, background: readOnly ? 'var(--bg-secondary)' : 'var(--input-bg)', padding: '0.45rem', fontSize: '0.85rem' }} />
                                                 </div>
                                             ))}
                                         </div>
 
                                         {/* Formula hint */}
-                                        <p style={{ margin: '0 0 0.6rem', fontSize: '0.68rem', color: 'var(--text-secondary)', textAlign: 'right' }}>
-                                            Formula: ({editIa1} + {editIa2} + {editAssignment}) ÷ 110 × 50 = <strong style={{ color: previewCIE >= 40 ? '#22c55e' : previewCIE >= 25 ? '#f97316' : '#ef4444' }}>{previewCIE}/50</strong>
+                                        <p style={{ margin: '0 0 0.6rem', fontSize: '0.65rem', color: 'var(--text-secondary)', textAlign: 'right' }}>
+                                            Formula: ({editIa1}+{editIa2}+{editAssignment})÷110×50 = <strong style={{ color: previewCIE >= 40 ? '#22c55e' : previewCIE >= 25 ? '#f97316' : '#ef4444' }}>{previewCIE}/50</strong>
                                         </p>
 
                                         {/* Remarks */}
-                                        <label style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Remarks</label>
+                                        <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>Remarks</label>
                                         <textarea value={editRemarks} onChange={e => setEditRemarks(e.target.value)}
-                                            rows={2} className="ep-input" style={{ resize: 'none', marginTop: 4 }} placeholder="Add remarks for this student…" />
+                                            rows={2} className="ep-input" style={{ resize: 'none', marginTop: 4, fontSize: '0.82rem' }} placeholder="Add remarks…" />
 
                                         <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} disabled={saving} onClick={saveMarks}
                                             style={{
-                                                marginTop: '0.75rem', width: '100%', padding: '0.7rem', borderRadius: '10px', border: 'none',
+                                                marginTop: '0.75rem', width: '100%', padding: '0.65rem', borderRadius: '10px', border: 'none',
                                                 background: 'linear-gradient(135deg,#4f8ef7,#9b59f7)', color: 'white', fontWeight: 700,
-                                                cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.8 : 1
+                                                cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.8 : 1, fontSize: '0.85rem'
                                             }}>
-                                            {saving ? '🤖 Saving & running AI…' : '💾 Save Marks + AI Analysis'}
+                                            {saving ? '🤖 Saving…' : '💾 Save & AI Analysis'}
                                         </motion.button>
                                     </div>
                                 </motion.div>
@@ -418,31 +420,31 @@ export default function TeacherDashboard() {
                 {/* ─── ATTENDANCE TAB ─── */}
                 {tab === 'attendance' && (
                     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-                        <div className="glass-card" style={{ padding: '1.25rem' }}>
+                        <div className="glass-card" style={{ padding: '1rem' }}>
                             <p style={{ margin: '0 0 0.75rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                                 📅 Mark Attendance — <span style={{ color: 'var(--accent-purple)' }}>{mySubject}</span>
                             </p>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
                                 <div>
-                                    <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 3 }}>Date</label>
+                                    <label style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', display: 'block', marginBottom: 3 }}>Date</label>
                                     <input type="date" value={attDate} onChange={e => setAttDate(e.target.value)}
-                                        className="ep-input" style={{ width: 180 }} />
+                                        className="ep-input" style={{ width: 160, fontSize: '0.8rem' }} />
                                 </div>
-                                <div style={{ marginTop: '1.1rem', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: 10, padding: '0.6rem 1rem' }}>
-                                    <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+                                <div style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: 10, padding: '0.5rem 0.8rem' }}>
+                                    <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
                                         Marking <strong>{students.length}</strong> students for <strong style={{ color: '#22c55e' }}>{attDate}</strong>
                                     </p>
                                 </div>
                             </div>
-                            <div style={{ overflowX: 'auto' }}>
+                            <div className="vtu-table-container">
                                 <table className="vtu-table">
                                     <thead><tr>
                                         <th style={{ textAlign: 'left' }}>#</th>
                                         <th style={{ textAlign: 'left' }}>USN</th>
                                         <th style={{ textAlign: 'left' }}>Name</th>
-                                        <th>✅ Present</th>
-                                        <th>❌ Absent</th>
-                                        <th>Curr Att%</th>
+                                        <th>P</th>
+                                        <th>A</th>
+                                        <th>Att%</th>
                                     </tr></thead>
                                     <tbody>
                                         {students.map((s, idx) => {
@@ -451,8 +453,8 @@ export default function TeacherDashboard() {
                                             return (
                                                 <tr key={s.student.id}>
                                                     <td style={{ color: 'var(--text-secondary)' }}>{idx + 1}</td>
-                                                    <td style={{ textAlign: 'left', fontSize: '0.72rem', color: 'var(--text-secondary)' }}>{s.student.usn}</td>
-                                                    <td style={{ textAlign: 'left', fontWeight: 600, fontSize: '0.8rem' }}>{s.student.name}</td>
+                                                    <td style={{ textAlign: 'left', fontSize: '0.68rem', color: 'var(--text-secondary)' }}>{s.student.usn}</td>
+                                                    <td style={{ textAlign: 'left', fontWeight: 600, fontSize: '0.78rem' }}>{s.student.name}</td>
                                                     <td><input type="radio" name={`att-${s.student.id}`} checked={isPresent} onChange={() => setAttMap(m => ({ ...m, [s.student.id]: true }))} /></td>
                                                     <td><input type="radio" name={`att-${s.student.id}`} checked={!isPresent} onChange={() => setAttMap(m => ({ ...m, [s.student.id]: false }))} /></td>
                                                     <td style={{ color: (sub?.attendancePct || 0) >= 75 ? '#22c55e' : '#ef4444', fontWeight: 600 }}>{sub?.attendancePct || 0}%</td>
@@ -464,11 +466,11 @@ export default function TeacherDashboard() {
                             </div>
                             <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} disabled={saving} onClick={submitAttendance}
                                 style={{
-                                    marginTop: '1rem', padding: '0.7rem 2rem', borderRadius: '10px', border: 'none',
+                                    marginTop: '1rem', width: '100%', maxWidth: 300, padding: '0.65rem', borderRadius: '10px', border: 'none',
                                     background: 'linear-gradient(135deg,#22c55e,#4f8ef7)', color: 'white', fontWeight: 700,
-                                    cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.8 : 1
+                                    cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.8 : 1, fontSize: '0.85rem'
                                 }}>
-                                {saving ? 'Saving…' : `✅ Submit Attendance for ${attDate}`}
+                                {saving ? 'Saving…' : '✅ Submit Attendance'}
                             </motion.button>
                         </div>
                     </motion.div>
@@ -533,7 +535,7 @@ export default function TeacherDashboard() {
             <AnimatePresence>
                 {chatStudent && (
                     <motion.div initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-                        style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', width: 380, zIndex: 50 }}>
+                        style={{ position: 'fixed', bottom: '1rem', right: '1rem', width: 'calc(100vw - 2rem)', maxWidth: 380, zIndex: 50 }}>
                         <MessageBox otherUser={chatStudent} onClose={() => setChatStudent(null)} />
                     </motion.div>
                 )}

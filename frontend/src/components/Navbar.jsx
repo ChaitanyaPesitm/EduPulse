@@ -48,17 +48,17 @@ export default function Navbar() {
             </div>
 
             {/* Right side */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 {/* Dark/Light toggle */}
                 <motion.button
                     whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
                     onClick={toggleTheme}
                     title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                     style={{
-                        width: 36, height: 36, borderRadius: '50%',
+                        width: 32, height: 32, borderRadius: '50%',
                         background: 'var(--bg-secondary)',
                         border: '1px solid var(--border)',
-                        cursor: 'pointer', fontSize: '1.1rem',
+                        cursor: 'pointer', fontSize: '1rem',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}
                 >
@@ -68,21 +68,21 @@ export default function Navbar() {
                 {/* User info */}
                 {user && (
                     <>
-                        <div style={{ textAlign: 'right' }}>
-                            <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-                                {user.name}
+                        <div style={{ textAlign: 'right' }} className="mobile-hide">
+                            <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                                {user.name.split(' ')[0]}
                             </p>
-                            <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
-                                {user.role === 'teacher' ? '👨‍🏫 Teacher' : '🎓 Student'}
+                            <p style={{ margin: 0, fontSize: '0.65rem', color: 'var(--text-secondary)' }}>
+                                {user.role === 'teacher' ? 'Teacher' : 'Student'}
                             </p>
                         </div>
                         <motion.button
                             whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
                             onClick={handleLogout}
                             style={{
-                                padding: '0.4rem 1rem', borderRadius: '8px', border: 'none',
+                                padding: '0.35rem 0.75rem', borderRadius: '8px', border: 'none',
                                 background: 'rgba(239,68,68,0.12)', color: '#ef4444',
-                                fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer',
+                                fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer',
                             }}
                         >
                             Logout

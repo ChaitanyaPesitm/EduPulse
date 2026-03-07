@@ -48,7 +48,7 @@ export default function Navbar() {
             </div>
 
             {/* Right side */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 {/* Dark/Light toggle */}
                 <motion.button
                     whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
@@ -68,12 +68,12 @@ export default function Navbar() {
                 {/* User info */}
                 {user && (
                     <>
-                        <div style={{ textAlign: 'right' }} className="mobile-hide">
-                            <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-                                {user.name.split(' ')[0]}
+                        <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', justifyContent: 'center' }} className="mobile-hide">
+                            <p style={{ margin: 0, fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
+                                {user.name}
                             </p>
-                            <p style={{ margin: 0, fontSize: '0.65rem', color: 'var(--text-secondary)' }}>
-                                {user.role === 'teacher' ? 'Teacher' : 'Student'}
+                            <p style={{ margin: 0, fontSize: '0.65rem', color: 'var(--text-secondary)', textTransform: 'capitalize' }}>
+                                {user.role}
                             </p>
                         </div>
                         <motion.button

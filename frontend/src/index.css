@@ -175,17 +175,9 @@ body {
 }
 
 @media (max-width: 1024px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
 
+  .dashboard-grid,
   .teacher-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 1024px) {
-  .dashboard-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -269,6 +261,6 @@ body {
   }
 
   .gradient-text {
-    font-size: 1.4rem;
+    font-size: inherit;
   }
 }

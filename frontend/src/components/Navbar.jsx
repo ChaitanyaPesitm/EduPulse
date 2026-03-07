@@ -30,9 +30,9 @@ export default function Navbar() {
             }}
         >
             {/* Logo */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontSize: '1.4rem' }}>⚡</span>
-                <span style={{ fontWeight: 800, fontSize: '1.15rem', color: 'var(--text-primary)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', cursor: 'pointer' }} onClick={() => navigate('/')}>
+                <img src="/src/assets/logo.png" alt="EduPulse Logo" style={{ width: 32, height: 32, objectFit: 'contain' }} />
+                <span style={{ fontWeight: 800, fontSize: '1.2rem', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
                     Edu<span className="gradient-text">Pulse</span>
                 </span>
                 {user?.role === 'teacher' && user?.subject && (

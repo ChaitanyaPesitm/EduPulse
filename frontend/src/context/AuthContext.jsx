@@ -58,6 +58,35 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
+    // --- PROACTIVE SESSION TIMEOUT ---
+    const parseJwt = (token) => {
+        try {
+            return JSON.parse(atob(token.split('.')[1]));
+        } catch (e) {
+            return null;
+        }
+    };
+
+    useEffect(() => {
+        const checkExpiry = () => {
+            const token = localStorage.getItem('edupulse_token');
+            if (!token) return;
+
+            const decoded = parseJwt(token);
+            if (!decoded || !decoded.exp) return;
+
+            // Date.now() is in ms, exp is in seconds
+            if (Date.now() >= decoded.exp * 1000) {
+                console.warn('Session expired. Logging out…');
+                logout();
+            }
+        };
+
+        const interval = setInterval(checkExpiry, 60000); // Check every minute
+        checkExpiry(); // Initial check
+        return () => clearInterval(interval);
+    }, [user]);
+
     return (
         <AuthContext.Provider value={{ user, loading, login, register, logout }}>
             {children}

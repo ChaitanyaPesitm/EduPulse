@@ -55,11 +55,13 @@ export default function TeacherLogin() {
                     {/* Header */}
                     <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                         <div style={{
-                            width: 72, height: 72, borderRadius: '50%', margin: '0 auto 1rem',
-                            background: 'linear-gradient(135deg, #9b59f7, #e040fb)',
+                            width: 80, height: 80, borderRadius: '20px', margin: '0 auto 1.25rem',
+                            background: 'var(--bg-secondary)', border: '1px solid var(--border)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '2rem', boxShadow: '0 8px 24px rgba(155,89,247,0.4)',
-                        }}>👩‍🏫</div>
+                            boxShadow: 'var(--shadow)',
+                        }}>
+                            <img src="/src/assets/logo.png" alt="EduPulse" style={{ width: 48, height: 48, objectFit: 'contain' }} />
+                        </div>
                         <h1 style={{ margin: 0, fontWeight: 800, fontSize: '1.6rem', color: 'var(--text-primary)' }}>Teacher Login</h1>
                         <p style={{ margin: '0.4rem 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
                             Manage your class and student performance

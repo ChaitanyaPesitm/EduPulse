@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts'
 import Navbar from '../components/Navbar'
 import MessageBox from '../components/MessageBox'
+import TiltCard from '../components/TiltCard'
+import Background3D from '../components/Background3D'
 import { CardSkeleton } from '../components/Skeleton'
 import { AuthContext } from '../context/AuthContext'
 import api from '../api/axios'
@@ -61,9 +63,15 @@ export default function StudentDashboard() {
     const activeSub = subjects[activeSubject]
 
     return (
-        <div style={{ background: 'var(--bg-primary)', minHeight: '100vh' }}>
+        <div style={{ background: 'var(--bg-primary)', minHeight: '100vh', position: 'relative', overflow: 'hidden', perspective: '1200px' }}>
             <Navbar />
-            <main style={{ maxWidth: 1100, margin: '0 auto', padding: '1.5rem 1rem' }}>
+            <Background3D />
+            <motion.main
+                initial={{ opacity: 0, rotateX: 10, z: -200 }}
+                animate={{ opacity: 1, rotateX: 0, z: 0 }}
+                transition={{ duration: 1, type: 'spring' }}
+                style={{ maxWidth: 1100, margin: '0 auto', padding: '1.5rem 1rem', transformStyle: 'preserve-3d', position: 'relative', zIndex: 1 }}
+            >
 
                 {/* Welcome */}
                 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: '1.25rem' }}>
@@ -83,11 +91,10 @@ export default function StudentDashboard() {
                         { label: 'Avg Attendance', value: `${avgAtt}%`, color: '#22c55e', icon: '📅' },
                         { label: 'Risk Level', value: risk, color: rs.color, icon: '🎯', bg: rs.bg },
                     ].map(({ label, value, color, icon, bg }) => (
-                        <motion.div key={label} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
-                            className="glass-card" style={{ padding: '0.85rem', background: bg || 'var(--bg-card)', borderLeft: `3px solid ${color}` }}>
+                        <TiltCard key={label} style={{ padding: '0.85rem', background: bg || 'var(--bg-card)', borderLeft: `3px solid ${color}` }}>
                             <p style={{ margin: 0, fontSize: '0.68rem', color: 'var(--text-secondary)' }}>{icon} {label}</p>
                             <p style={{ margin: '0.2rem 0 0', fontWeight: 800, fontSize: '1.2rem', color }}>{value}</p>
-                        </motion.div>
+                        </TiltCard>
                     ))}
                 </div>
 
@@ -207,7 +214,7 @@ export default function StudentDashboard() {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
                         {/* Radar */}
-                        <div className="glass-card" style={{ padding: '0.75rem' }}>
+                        <TiltCard style={{ padding: '0.75rem' }}>
                             <p style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '0.82rem', color: 'var(--text-primary)' }}>📡 CIE Radar</p>
                             <ResponsiveContainer width="100%" height={160}>
                                 <RadarChart data={radarData} outerRadius="70%">
@@ -217,10 +224,10 @@ export default function StudentDashboard() {
                                     <Tooltip contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-primary)', fontSize: 11 }} />
                                 </RadarChart>
                             </ResponsiveContainer>
-                        </div>
+                        </TiltCard>
 
                         {/* AI Insight */}
-                        <div className="glass-card" style={{ padding: '1rem', borderLeft: '3px solid var(--accent-purple)' }}>
+                        <TiltCard style={{ padding: '1rem', borderLeft: '3px solid var(--accent-purple)' }}>
                             <p style={{ margin: '0 0 0.5rem', fontWeight: 700, fontSize: '0.82rem', color: 'var(--text-primary)' }}>🤖 AI Insight</p>
                             <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.4rem' }}>
                                 <span style={{ fontSize: '0.7rem', padding: '1px 8px', borderRadius: 999, background: 'rgba(155,89,247,0.12)', color: '#9b59f7' }}>{data?.learnerCategory || '—'}</span>
@@ -229,7 +236,7 @@ export default function StudentDashboard() {
                             <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: 1.45 }}>
                                 {data?.recommendation || 'Ask your teacher to update your marks to get AI insights.'}
                             </p>
-                        </div>
+                        </TiltCard>
 
                         {/* Message Teachers */}
                         <div className="glass-card" style={{ padding: '1rem' }}>
@@ -255,7 +262,7 @@ export default function StudentDashboard() {
                         </div>
                     </div>
                 </div>
-            </main>
+            </motion.main>
 
             {/* Chat overlay */}
             <AnimatePresence>

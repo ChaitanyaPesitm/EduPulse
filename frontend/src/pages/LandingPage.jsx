@@ -1,54 +1,8 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 
-function TiltCard({ children, onClick, style, glow }) {
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-
-    const mouseXSpring = useSpring(x);
-    const mouseYSpring = useSpring(y);
-
-    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
-    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
-
-    const handleMouseMove = (e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        const xPct = mouseX / width - 0.5;
-        const yPct = mouseY / height - 0.5;
-        x.set(xPct);
-        y.set(yPct);
-    };
-
-    const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
-    };
-
-    return (
-        <motion.div
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{
-                rotateX,
-                rotateY,
-                transformStyle: "preserve-3d",
-                ...style
-            }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={onClick}
-            className="glass-card"
-        >
-            <div style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d", width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-                {children}
-            </div>
-        </motion.div>
-    );
-}
+import TiltCard from '../components/TiltCard'
+import Background3D from '../components/Background3D'
 
 export default function LandingPage() {
     const navigate = useNavigate()
@@ -90,40 +44,7 @@ export default function LandingPage() {
             }}
         >
             {/* 3D Background Objects */}
-            <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-                <motion.div
-                    animate={{
-                        y: [0, -20, 0],
-                        rotateZ: [0, 360],
-                        scale: [1, 1.1, 1]
-                    }}
-                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                    style={{
-                        position: 'absolute', top: '15%', left: '10%',
-                        width: 120, height: 120,
-                        background: 'linear-gradient(135deg, rgba(79,142,247,0.2), rgba(108,99,255,0.05))',
-                        borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%',
-                        filter: 'blur(2px)',
-                        border: '1px solid rgba(255,255,255,0.1)'
-                    }}
-                />
-                <motion.div
-                    animate={{
-                        y: [0, 30, 0],
-                        rotateZ: [360, 0],
-                        scale: [1, 1.2, 1]
-                    }}
-                    transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-                    style={{
-                        position: 'absolute', bottom: '15%', right: '10%',
-                        width: 180, height: 180,
-                        background: 'linear-gradient(135deg, rgba(155,89,247,0.15), rgba(224,64,251,0.05))',
-                        borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%',
-                        filter: 'blur(3px)',
-                        border: '1px solid rgba(255,255,255,0.1)'
-                    }}
-                />
-            </div>
+            <Background3D />
 
             <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', maxWidth: 860, width: '100%' }}>
                 {/* Logo / Title */}

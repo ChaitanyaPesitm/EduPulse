@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
 import Navbar from '../components/Navbar'
 import MessageBox from '../components/MessageBox'
+import TiltCard from '../components/TiltCard'
+import Background3D from '../components/Background3D'
 import { TableSkeleton, CardSkeleton } from '../components/Skeleton'
 import { AuthContext } from '../context/AuthContext'
 import api from '../api/axios'
@@ -120,98 +122,106 @@ export default function TeacherDashboard() {
 
     // ── Blank panel (no student selected) ──────────────────────────────────────
     const BlankPanel = () => (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-card"
-            style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <TiltCard style={{ padding: '1.5rem' }}>
 
-            {/* Welcome banner */}
-            <div style={{ background: 'linear-gradient(135deg,rgba(79,142,247,0.12),rgba(155,89,247,0.12))', borderRadius: 14, padding: '1.25rem 1.5rem' }}>
-                <p style={{ margin: '0 0 0.2rem', fontWeight: 800, fontSize: '1.1rem', color: 'var(--text-primary)' }}>
-                    👋 Welcome, {user?.name}!
-                </p>
-                <p style={{ margin: 0, fontSize: '0.83rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-                    You teach <strong style={{ color: 'var(--accent-purple)' }}>{mySubject}</strong>.
-                    Select any student from the list to view their marks and edit your subject.
-                </p>
-            </div>
+                {/* Welcome banner */}
+                <div style={{ background: 'linear-gradient(135deg,rgba(79,142,247,0.12),rgba(155,89,247,0.12))', borderRadius: 14, padding: '1.25rem 1.5rem' }}>
+                    <p style={{ margin: '0 0 0.2rem', fontWeight: 800, fontSize: '1.1rem', color: 'var(--text-primary)' }}>
+                        👋 Welcome, {user?.name}!
+                    </p>
+                    <p style={{ margin: 0, fontSize: '0.83rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                        You teach <strong style={{ color: 'var(--accent-purple)' }}>{mySubject}</strong>.
+                        Select any student from the list to view their marks and edit your subject.
+                    </p>
+                </div>
 
-            {/* Quick stats for my subject */}
-            {!loading && (
+                {/* Quick stats for my subject */}
+                {!loading && (
+                    <div>
+                        <p style={{ margin: '0 0 0.6rem', fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                            {mySubject} — Class Summary
+                        </p>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '0.6rem' }}>
+                            {[
+                                {
+                                    label: 'Class Avg CIE',
+                                    value: students.length
+                                        ? (students.reduce((a, s) => a + (s.performance?.subjects?.find(x => x.name === mySubject)?.totalCIE || 0), 0) / students.length).toFixed(1)
+                                        : '—',
+                                    unit: '/50', color: '#4f8ef7',
+                                },
+                                {
+                                    label: 'Avg Attendance',
+                                    value: students.length
+                                        ? (students.reduce((a, s) => a + (s.performance?.subjects?.find(x => x.name === mySubject)?.attendancePct || 0), 0) / students.length).toFixed(0)
+                                        : '—',
+                                    unit: '%', color: '#22c55e',
+                                },
+                                {
+                                    label: 'Below 75% Att',
+                                    value: students.filter(s => (s.performance?.subjects?.find(x => x.name === mySubject)?.attendancePct || 0) < 75).length,
+                                    unit: ' stu', color: '#ef4444',
+                                },
+                            ].map(({ label, value, unit, color }) => (
+                                <div key={label} style={{ background: 'var(--bg-secondary)', borderRadius: 10, padding: '0.85rem', textAlign: 'center' }}>
+                                    <p style={{ margin: 0, fontSize: '0.68rem', color: 'var(--text-secondary)' }}>{label}</p>
+                                    <p style={{ margin: '0.25rem 0 0', fontWeight: 800, fontSize: '1.3rem', color }}>
+                                        {value}<span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{unit}</span>
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Leaderboard */}
                 <div>
                     <p style={{ margin: '0 0 0.6rem', fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                        {mySubject} — Class Summary
+                        🏆 Top 5 — {mySubject}
                     </p>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '0.6rem' }}>
-                        {[
-                            {
-                                label: 'Class Avg CIE',
-                                value: students.length
-                                    ? (students.reduce((a, s) => a + (s.performance?.subjects?.find(x => x.name === mySubject)?.totalCIE || 0), 0) / students.length).toFixed(1)
-                                    : '—',
-                                unit: '/50', color: '#4f8ef7',
-                            },
-                            {
-                                label: 'Avg Attendance',
-                                value: students.length
-                                    ? (students.reduce((a, s) => a + (s.performance?.subjects?.find(x => x.name === mySubject)?.attendancePct || 0), 0) / students.length).toFixed(0)
-                                    : '—',
-                                unit: '%', color: '#22c55e',
-                            },
-                            {
-                                label: 'Below 75% Att',
-                                value: students.filter(s => (s.performance?.subjects?.find(x => x.name === mySubject)?.attendancePct || 0) < 75).length,
-                                unit: ' stu', color: '#ef4444',
-                            },
-                        ].map(({ label, value, unit, color }) => (
-                            <div key={label} style={{ background: 'var(--bg-secondary)', borderRadius: 10, padding: '0.85rem', textAlign: 'center' }}>
-                                <p style={{ margin: 0, fontSize: '0.68rem', color: 'var(--text-secondary)' }}>{label}</p>
-                                <p style={{ margin: '0.25rem 0 0', fontWeight: 800, fontSize: '1.3rem', color }}>
-                                    {value}<span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{unit}</span>
-                                </p>
+                    {leaderboard.map((s, i) => (
+                        <motion.div key={s.student.id} whileHover={{ x: 3 }} onClick={() => selectStudent(s)}
+                            style={{
+                                display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.6rem 0.75rem', borderRadius: 10,
+                                background: 'var(--bg-secondary)', marginBottom: '0.4rem', cursor: 'pointer',
+                                border: '1px solid var(--border)'
+                            }}>
+                            <span style={{ fontSize: '1rem', width: 24, textAlign: 'center' }}>
+                                {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`}
+                            </span>
+                            <div style={{ flex: 1 }}>
+                                <p style={{ margin: 0, fontWeight: 600, fontSize: '0.82rem', color: 'var(--text-primary)' }}>{s.student.name}</p>
+                                <p style={{ margin: 0, fontSize: '0.68rem', color: 'var(--text-secondary)' }}>{s.student.usn}</p>
                             </div>
-                        ))}
-                    </div>
+                            <span style={{ fontWeight: 800, fontSize: '0.95rem', color: '#4f8ef7' }}>{s.subCIE}<span style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>/50</span></span>
+                        </motion.div>
+                    ))}
                 </div>
-            )}
 
-            {/* Leaderboard */}
-            <div>
-                <p style={{ margin: '0 0 0.6rem', fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                    🏆 Top 5 — {mySubject}
-                </p>
-                {leaderboard.map((s, i) => (
-                    <motion.div key={s.student.id} whileHover={{ x: 3 }} onClick={() => selectStudent(s)}
-                        style={{
-                            display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.6rem 0.75rem', borderRadius: 10,
-                            background: 'var(--bg-secondary)', marginBottom: '0.4rem', cursor: 'pointer',
-                            border: '1px solid var(--border)'
-                        }}>
-                        <span style={{ fontSize: '1rem', width: 24, textAlign: 'center' }}>
-                            {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`}
-                        </span>
-                        <div style={{ flex: 1 }}>
-                            <p style={{ margin: 0, fontWeight: 600, fontSize: '0.82rem', color: 'var(--text-primary)' }}>{s.student.name}</p>
-                            <p style={{ margin: 0, fontSize: '0.68rem', color: 'var(--text-secondary)' }}>{s.student.usn}</p>
-                        </div>
-                        <span style={{ fontWeight: 800, fontSize: '0.95rem', color: '#4f8ef7' }}>{s.subCIE}<span style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>/50</span></span>
-                    </motion.div>
-                ))}
-            </div>
-
-            {/* Marks formula card */}
-            <div style={{ background: 'rgba(155,89,247,0.08)', border: '1px solid rgba(155,89,247,0.2)', borderRadius: 12, padding: '0.9rem 1.1rem' }}>
-                <p style={{ margin: '0 0 0.4rem', fontWeight: 700, fontSize: '0.82rem', color: 'var(--accent-purple)' }}>📐 CIE Calculation Formula</p>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
-                    <code style={{ background: 'rgba(155,89,247,0.15)', padding: '1px 5px', borderRadius: 4 }}>CIE = round((IA1 + IA2 + Assignment) ÷ 110 × 50)</code><br />
-                    IA1: max <strong>50</strong> &nbsp;|&nbsp; IA2: max <strong>50</strong> &nbsp;|&nbsp; Assignment: max <strong>10</strong> &nbsp;|&nbsp; Total CIE: max <strong>50</strong>
-                </p>
-            </div>
+                {/* Marks formula card */}
+                <div style={{ background: 'rgba(155,89,247,0.08)', border: '1px solid rgba(155,89,247,0.2)', borderRadius: 12, padding: '0.9rem 1.1rem' }}>
+                    <p style={{ margin: '0 0 0.4rem', fontWeight: 700, fontSize: '0.82rem', color: 'var(--accent-purple)' }}>📐 CIE Calculation Formula</p>
+                    <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+                        <code style={{ background: 'rgba(155,89,247,0.15)', padding: '1px 5px', borderRadius: 4 }}>CIE = round((IA1 + IA2 + Assignment) ÷ 110 × 50)</code><br />
+                        IA1: max <strong>50</strong> &nbsp;|&nbsp; IA2: max <strong>50</strong> &nbsp;|&nbsp; Assignment: max <strong>10</strong> &nbsp;|&nbsp; Total CIE: max <strong>50</strong>
+                    </p>
+                </div>
+            </TiltCard>
         </motion.div>
     )
 
     return (
-        <div style={{ background: 'var(--bg-primary)', minHeight: '100vh' }}>
+        <div style={{ background: 'var(--bg-primary)', minHeight: '100vh', position: 'relative', overflow: 'hidden', perspective: '1200px' }}>
             <Navbar />
-            <main style={{ maxWidth: 1280, margin: '0 auto', padding: '1.25rem 1rem' }}>
+            <Background3D />
+            <motion.main
+                initial={{ opacity: 0, rotateX: -10, z: -200 }}
+                animate={{ opacity: 1, rotateX: 0, z: 0 }}
+                transition={{ duration: 1, type: 'spring' }}
+                style={{ maxWidth: 1280, margin: '0 auto', padding: '1.25rem 1rem', position: 'relative', zIndex: 1, transformStyle: 'preserve-3d' }}
+            >
 
                 {/* Header */}
                 <div style={{ marginBottom: '1rem' }}>
@@ -233,10 +243,10 @@ export default function TeacherDashboard() {
                             { label: 'Avg Score', value: analytics.classAvgScore, color: '#22c55e', icon: '📊' },
                             { label: 'Fast Learners', value: analytics.categoryBreakdown['Fast Learner'] || 0, color: '#9b59f7', icon: '🚀' },
                         ].map(({ label, value, color, icon }) => (
-                            <div key={label} className="glass-card" style={{ padding: '0.85rem', borderLeft: `3px solid ${color}` }}>
+                            <TiltCard key={label} style={{ padding: '0.85rem', borderLeft: `3px solid ${color}` }}>
                                 <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginBottom: '0.15rem' }}>{icon} {label}</div>
                                 <div style={{ fontSize: '1.25rem', fontWeight: 800, color }}>{value}</div>
-                            </div>
+                            </TiltCard>
                         ))}
                     </div>
                 )}
@@ -530,7 +540,7 @@ export default function TeacherDashboard() {
                         </div>
                     </motion.div>
                 )}
-            </main>
+            </motion.main>
 
             <AnimatePresence>
                 {chatStudent && (

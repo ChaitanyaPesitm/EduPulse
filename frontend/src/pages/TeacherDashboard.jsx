@@ -126,7 +126,7 @@ export default function TeacherDashboard() {
             {/* Welcome banner */}
             <div style={{ background: 'linear-gradient(135deg,rgba(79,142,247,0.12),rgba(155,89,247,0.12))', borderRadius: 14, padding: '1.25rem 1.5rem' }}>
                 <p style={{ margin: '0 0 0.2rem', fontWeight: 800, fontSize: '1.1rem', color: 'var(--text-primary)' }}>
-                    👋 Welcome, {user?.name?.split(' ')[0]}!
+                    👋 Welcome, {user?.name}!
                 </p>
                 <p style={{ margin: 0, fontSize: '0.83rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                     You teach <strong style={{ color: 'var(--accent-purple)' }}>{mySubject}</strong>.

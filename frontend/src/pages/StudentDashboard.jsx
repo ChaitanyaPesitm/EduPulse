@@ -68,7 +68,7 @@ export default function StudentDashboard() {
                 {/* Welcome */}
                 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: '1.25rem' }}>
                     <h1 style={{ margin: 0, fontWeight: 800, fontSize: '1.7rem', color: 'var(--text-primary)' }}>
-                        🎓 Hello, <span className="gradient-text">{user?.name?.split(' ')[0]}</span>!
+                        🎓 Hello, <span className="gradient-text">{user?.name}</span>!
                     </h1>
                     <p style={{ margin: '0.2rem 0 0', color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
                         VTU 6th Sem CSE — PESITM 2025-26
@@ -247,7 +247,7 @@ export default function StudentDashboard() {
                                             {t.name.charAt(0)}
                                         </div>
                                         <div style={{ textAlign: 'left', overflow: 'hidden' }}>
-                                            <p style={{ margin: 0, fontSize: '0.72rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.name.split(' ')[0]}</p>
+                                            <p style={{ margin: 0, fontSize: '0.72rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.name}</p>
                                         </div>
                                     </button>
                                 ))}

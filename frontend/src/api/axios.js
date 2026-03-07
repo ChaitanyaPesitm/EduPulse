@@ -19,7 +19,7 @@ api.interceptors.request.use((config) => {
     }
 
     // 2. Attach JWT token
-    const token = localStorage.getItem('edupulse_token');
+    const token = sessionStorage.getItem('edupulse_token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
@@ -32,8 +32,8 @@ api.interceptors.response.use(
     (res) => res,
     (error) => {
         if (error.response?.status === 401) {
-            localStorage.removeItem('edupulse_token');
-            localStorage.removeItem('edupulse_user');
+            sessionStorage.removeItem('edupulse_token');
+            sessionStorage.removeItem('edupulse_user');
             // Avoid infinite loops if already on login page
             if (!window.location.pathname.includes('login')) {
                 window.location.href = '/';

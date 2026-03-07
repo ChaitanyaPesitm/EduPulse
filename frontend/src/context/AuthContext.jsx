@@ -5,7 +5,7 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(() => {
-        const stored = localStorage.getItem('edupulse_user');
+        const stored = sessionStorage.getItem('edupulse_user');
         return stored ? JSON.parse(stored) : null;
     });
     const [loading, setLoading] = useState(false);
@@ -14,8 +14,8 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
         try {
             const { data } = await api.post('/auth/login', { email, password });
-            localStorage.setItem('edupulse_token', data.token);
-            localStorage.setItem('edupulse_user', JSON.stringify(data.user));
+            sessionStorage.setItem('edupulse_token', data.token);
+            sessionStorage.setItem('edupulse_user', JSON.stringify(data.user));
             setUser(data.user);
             return { success: true, role: data.user.role };
         } catch (err) {
@@ -41,8 +41,8 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
         try {
             const { data } = await api.post('/auth/register', { name, email, password, role });
-            localStorage.setItem('edupulse_token', data.token);
-            localStorage.setItem('edupulse_user', JSON.stringify(data.user));
+            sessionStorage.setItem('edupulse_token', data.token);
+            sessionStorage.setItem('edupulse_user', JSON.stringify(data.user));
             setUser(data.user);
             return { success: true, role: data.user.role };
         } catch (err) {
@@ -53,8 +53,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        localStorage.removeItem('edupulse_token');
-        localStorage.removeItem('edupulse_user');
+        sessionStorage.removeItem('edupulse_token');
+        sessionStorage.removeItem('edupulse_user');
         setUser(null);
     };
 
@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const checkExpiry = () => {
-            const token = localStorage.getItem('edupulse_token');
+            const token = sessionStorage.getItem('edupulse_token');
             if (!token) return;
 
             const decoded = parseJwt(token);

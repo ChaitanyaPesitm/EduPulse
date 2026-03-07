@@ -60,7 +60,7 @@ export default function TeacherLogin() {
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             boxShadow: 'var(--shadow)',
                         }}>
-                            <img src="/src/assets/logo.png" alt="EduPulse" style={{ width: 48, height: 48, objectFit: 'contain' }} />
+                            <img src="/logo.png" alt="EduPulse" style={{ width: 48, height: 48, objectFit: 'contain' }} />
                         </div>
                         <h1 style={{ margin: 0, fontWeight: 800, fontSize: '1.6rem', color: 'var(--text-primary)' }}>Teacher Login</h1>
                         <p style={{ margin: '0.4rem 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>

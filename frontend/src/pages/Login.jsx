@@ -40,7 +40,7 @@ export default function Login() {
                 {/* Logo */}
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center gap-3 mb-3">
-                        <img src="/src/assets/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
+                        <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain" />
                         <span className="text-2xl font-bold gradient-text">EduPulse AI</span>
                     </div>
                     <p style={{ color: 'var(--text-secondary)' }} className="text-sm">Sign in to your dashboard</p>

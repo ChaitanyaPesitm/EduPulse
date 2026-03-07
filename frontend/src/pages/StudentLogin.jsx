@@ -34,6 +34,7 @@ export default function StudentLogin() {
             minHeight: '100vh', background: 'var(--bg-primary)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             padding: '1.5rem', position: 'relative', overflow: 'hidden',
+            perspective: '1200px'
         }}>
             {/* Background blobs */}
             <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
@@ -43,8 +44,8 @@ export default function StudentLogin() {
                     style={{ position: 'absolute', bottom: '-15%', right: '-15%', width: 450, height: 450, borderRadius: '50%', background: 'radial-gradient(circle, rgba(108,99,255,0.15), transparent 70%)' }} />
             </div>
 
-            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-                style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 420 }}>
+            <motion.div initial={{ opacity: 0, rotateY: -20, z: -100 }} animate={{ opacity: 1, rotateY: 0, z: 0 }} transition={{ duration: 0.8, type: 'spring' }}
+                style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 420, transformStyle: 'preserve-3d' }}>
 
                 {/* Back link */}
                 <Link to="/" style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '1.5rem' }}>
